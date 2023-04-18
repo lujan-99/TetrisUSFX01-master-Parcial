@@ -51,7 +51,10 @@ APiece::APiece()
 void APiece::BeginPlay()
 {
 	Super::BeginPlay();
-    SpawnBlocks();
+    
+    //SpawnBlocks();
+    Index();
+    Dibujar();
 }
 
 // Called every frame
@@ -59,6 +62,40 @@ void APiece::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void APiece::Dibujar()
+{
+    int y = 0;
+    std::vector<std::vector<std::pair<float, float>>> Shapes =
+    {
+        {{-20.0+y  , 0.0}, {-10.0 + y, 0.0}, {0.0 + y, 0.0}, {10.0 + y, 0.0}},
+        {{0.0 + y, 10.0}, {0.0 + y, 0.0}, {10.0 + y, 0.0}, {20.0 + y, 0.0}},
+        {{-20.0 + y, 0.0}, {-10.0 + y, 0.0}, {0.0 + y, 0.0}, {0.0 + y, 10.0}},
+        {{0.0 + y, 0.0}, {10.0 + y, 0.0}, {0.0 + y, -10.0}, {10.0 + y, -10.0}},
+        {{-10.0 + y, -10.0}, {0.0 + y, -10.0}, {0.0 + y, 0.0}, {10.0 + y, 0.0}},
+        {{-10.0 + y, 0.0}, {0.0 + y, 0.0}, {0.0 + y, 10.0}, {10.0 + y, 0.0}},
+        //{{-10.0, 0.0}, {0.0, 0.0}, {0.0, -10.0}, {10.0, -10.0}},
+        {{-20.0 + y, 10.0}, {-10.0 + y, 0.0}, {0.0 + y, 10.0}, {10.0 + y, 0.0}},
+    };
+     
+    index ;
+    UE_LOG(LogTemp, Warning, TEXT("index=%d"), index);
+    const std::vector<std::pair<float, float>>& YZs = Shapes[index];
+    for (auto&& YZ : YZs)
+    {
+        FRotator Rotation(0.0, 0.0, 0.0);
+        ABlock* B = GetWorld()->SpawnActor<ABlock>(this->GetActorLocation(), Rotation);
+        B->BlockMesh->SetMaterial(1, Colors[index]);
+        Blocks.Add(B);
+        B->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
+        B->SetActorRelativeLocation(FVector(0.0, YZ.first, YZ.second));
+    }
+}
+
+void APiece::Index()
+{
+    index = FMath::RandRange(0, 6);
 }
 
 void APiece::SpawnBlocks()
@@ -74,14 +111,14 @@ void APiece::SpawnBlocks()
         //{{-10.0, 0.0}, {0.0, 0.0}, {0.0, -10.0}, {10.0, -10.0}},
         {{-20.0, 10.0}, {-10.0, 0.0}, {0.0, 10.0}, {10.0, 0.0}},
     };
-    const int Index = FMath::RandRange(0, Shapes.size() - 1);
-    UE_LOG(LogTemp, Warning, TEXT("index=%d"), Index);
-    const std::vector<std::pair<float, float>>& YZs = Shapes[Index];
+    index;
+    UE_LOG(LogTemp, Warning, TEXT("index=%d"), index);
+    const std::vector<std::pair<float, float>>& YZs = Shapes[index];
     for (auto&& YZ : YZs)
     {
         FRotator Rotation(0.0, 0.0, 0.0);
         ABlock* B = GetWorld()->SpawnActor<ABlock>(this->GetActorLocation(), Rotation);
-        B->BlockMesh->SetMaterial(1, Colors[Index]);
+        B->BlockMesh->SetMaterial(1, Colors[index]);
         Blocks.Add(B);
         B->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
         B->SetActorRelativeLocation(FVector(0.0, YZ.first, YZ.second));

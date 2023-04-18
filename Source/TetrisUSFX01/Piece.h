@@ -36,15 +36,20 @@ public:
 	bool MoveDown(bool PlaySound = true);
 	void Dismiss();
 	bool CheckWillCollision(std::function<FVector(FVector OldLocation)> ChangeBeforeCheck);
-	
+	void Dibujar();
+	void Index();
+
 	UPROPERTY(EditAnywhere)
 	TArray<class UMaterial*> Colors;
 
 private:
-
+	int index;
 	TArray<ABlock*> Blocks;
 	
 public:
 	void SpawnBlocks();
+	/*void setIndex(int _Index) { Index = _Index;}
+	int getIndex() {return Index;}*/
+	
 
 };

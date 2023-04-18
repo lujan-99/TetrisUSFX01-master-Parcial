@@ -44,7 +44,7 @@ void ABoard::Tick(float DeltaTime)
     case PS_NOT_INITED:
         
         Inicio();
-        //NewPiece();
+       // NewPiece();
         CoolLeft = CoolDown;
         Status = PS_MOVING;
         break;
@@ -136,6 +136,7 @@ void ABoard::MoveDown()
 //esta fincion solo sirve vuando hay una pieza en el fondo
 void ABoard::NewPiece()
 {
+
     //si currentpiece esta activo limpiamos los valores
     if (CurrentPiece)
     {
@@ -144,6 +145,7 @@ void ABoard::NewPiece()
     }
     //Como la pieza actual ya supuestamente llego abajo y se destruyo, se crea una nueva daldole el valor de el que seria siguiente
     CurrentPiece = New;
+    CurrentPiece->SpawnBlocks();
     //cuando se crea una nueva pieza, se debe chequear si hay lineas completas
     CheckLine();
     //Entonces limpiamos la nueva pieza
@@ -154,10 +156,8 @@ void ABoard::NewPiece()
     }
     FVector Location(0.0, 5.0, 195.0);
     FRotator Rotation(0.0, 0.0, 0.0);
-    New = GetWorld()->SpawnActor<APiece>(Location, Rotation);
-    
-    
-    
+     New = GetWorld()->SpawnActor<APiece>(Location, Rotation);
+    CurrentPiece->Dibujar();
     bGameOver = CheckGameOver();
     if (bGameOver)
     {
@@ -170,10 +170,13 @@ void ABoard::NewPiece()
 }
 void ABoard::Inicio()
 {
-    FVector Location(0.0, 5.0, 195.0);
+    FVector Location(0.0, 80.0, 195.0);
+    FVector Loc(0.0, 5.0, 195.0);
     FRotator Rotation(0.0, 0.0, 0.0);
-    CurrentPiece = GetWorld()->SpawnActor<APiece>(Location, Rotation);
     New = GetWorld()->SpawnActor<APiece>(Location, Rotation);
+    CurrentPiece = GetWorld()->SpawnActor<APiece>(Loc, Rotation);
+    
+    
 }
 void ABoard::CheckLine()
 {
