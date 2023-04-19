@@ -53,8 +53,8 @@ void APiece::BeginPlay()
 	Super::BeginPlay();
     
     //SpawnBlocks();
-    Index();
-    Dibujar();
+    //Index();
+    //SpawnBlocks();
 }
 
 // Called every frame
@@ -64,7 +64,7 @@ void APiece::Tick(float DeltaTime)
 
 }
 
-void APiece::Dibujar()
+void APiece::Dibujar(int dex)
 {
     int y = 0;
     std::vector<std::vector<std::pair<float, float>>> Shapes =
@@ -79,15 +79,14 @@ void APiece::Dibujar()
         {{-20.0 + y, 10.0}, {-10.0 + y, 0.0}, {0.0 + y, 10.0}, {10.0 + y, 0.0}},
     };
      
-    index ;
-    UE_LOG(LogTemp, Warning, TEXT("index=%d"), index);
+    dex ;
+    
     const std::vector<std::pair<float, float>>& YZs = Shapes[index];
     for (auto&& YZ : YZs)
     {
         FRotator Rotation(0.0, 0.0, 0.0);
         ABlock* B = GetWorld()->SpawnActor<ABlock>(this->GetActorLocation(), Rotation);
-        B->BlockMesh->SetMaterial(1, Colors[index]);
-        Blocks.Add(B);
+        B->BlockMesh->SetMaterial(1, Colors[dex]);
         B->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
         B->SetActorRelativeLocation(FVector(0.0, YZ.first, YZ.second));
     }
@@ -145,6 +144,14 @@ void APiece::DrawDebugLines()
     }
 }
 
+void APiece::Eliminar()
+{
+    for (ABlock* B : Blocks)
+    {
+        B->ConditionalBeginDestroy();
+        B = nullptr;
+    }
+}
 void APiece::TestRotate()
 {
     auto RotateVector = [this](FVector OldVector) {

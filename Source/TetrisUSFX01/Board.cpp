@@ -56,6 +56,8 @@ void ABoard::Tick(float DeltaTime)
         }
         break;
     case PS_GOT_BOTTOM:
+        //New->Index();
+        New->Eliminar();
         CoolLeft -= DeltaTime;
         if (CoolLeft <= 0.0f)
         {
@@ -65,6 +67,7 @@ void ABoard::Tick(float DeltaTime)
                 CurrentPiece->Destroy();
             }
             CurrentPiece = nullptr;
+            
             NewPiece();
             CoolLeft = CoolDown;
             Status = PS_MOVING;
@@ -136,28 +139,30 @@ void ABoard::MoveDown()
 //esta fincion solo sirve vuando hay una pieza en el fondo
 void ABoard::NewPiece()
 {
-
-    //si currentpiece esta activo limpiamos los valores
+    CheckLine();
+    FVector Location(0.0, 5.0, 195.0);
+    FVector Loc(0.0, 80.0, 195.0);
+    FRotator Rotation(0.0, 0.0, 0.0);
     if (CurrentPiece)
     {
         CurrentPiece->Dismiss();
         CurrentPiece->Destroy();
     }
-    //Como la pieza actual ya supuestamente llego abajo y se destruyo, se crea una nueva daldole el valor de el que seria siguiente
-    CurrentPiece = New;
+    int der = New->getIndex();
+  
+    CurrentPiece = GetWorld()->SpawnActor<APiece>(Location, Rotation);
+    CurrentPiece->setIndex(der);
     CurrentPiece->SpawnBlocks();
-    //cuando se crea una nueva pieza, se debe chequear si hay lineas completas
-    CheckLine();
-    //Entonces limpiamos la nueva pieza
     if (New)
     {
         New->Dismiss();
         New->Destroy();
+        
     }
-    FVector Location(0.0, 5.0, 195.0);
-    FRotator Rotation(0.0, 0.0, 0.0);
-     New = GetWorld()->SpawnActor<APiece>(Location, Rotation);
-    CurrentPiece->Dibujar();
+   
+    New = GetWorld()->SpawnActor<APiece>(Loc, Rotation);
+    New->Index();
+    New->SpawnBlocks();
     bGameOver = CheckGameOver();
     if (bGameOver)
     {
@@ -170,11 +175,16 @@ void ABoard::NewPiece()
 }
 void ABoard::Inicio()
 {
-    FVector Location(0.0, 80.0, 195.0);
-    FVector Loc(0.0, 5.0, 195.0);
+    FVector Loc(0.0, 80.0, 195.0);
+    FVector Location(0.0, 5.0, 195.0);
     FRotator Rotation(0.0, 0.0, 0.0);
-    New = GetWorld()->SpawnActor<APiece>(Location, Rotation);
-    CurrentPiece = GetWorld()->SpawnActor<APiece>(Loc, Rotation);
+    New = GetWorld()->SpawnActor<APiece>(Loc, Rotation);
+    New->Index();
+    New->SpawnBlocks();
+    CurrentPiece = GetWorld()->SpawnActor<APiece>(Location, Rotation);
+    CurrentPiece->Index();
+    CurrentPiece->SpawnBlocks();
+    
     
     
 }

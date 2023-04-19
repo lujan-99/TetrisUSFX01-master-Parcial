@@ -36,8 +36,9 @@ public:
 	bool MoveDown(bool PlaySound = true);
 	void Dismiss();
 	bool CheckWillCollision(std::function<FVector(FVector OldLocation)> ChangeBeforeCheck);
-	void Dibujar();
+	void Dibujar(int dex);
 	void Index();
+	void Eliminar();
 
 	UPROPERTY(EditAnywhere)
 	TArray<class UMaterial*> Colors;
@@ -48,8 +49,8 @@ private:
 	
 public:
 	void SpawnBlocks();
-	/*void setIndex(int _Index) { Index = _Index;}
-	int getIndex() {return Index;}*/
+	void setIndex(int _Index) { index = _Index;}
+	int getIndex() {return index;}
 	
 
 };
