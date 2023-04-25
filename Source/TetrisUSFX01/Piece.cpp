@@ -51,9 +51,7 @@ APiece::APiece()
 void APiece::BeginPlay()
 {
 	Super::BeginPlay();
-    
-    //SpawnBlocks();
-    //Index();
+  
     //SpawnBlocks();
 }
 
@@ -64,33 +62,7 @@ void APiece::Tick(float DeltaTime)
 
 }
 
-void APiece::Dibujar(int dex)
-{
-    int y = 0;
-    std::vector<std::vector<std::pair<float, float>>> Shapes =
-    {
-        {{-20.0+y  , 0.0}, {-10.0 + y, 0.0}, {0.0 + y, 0.0}, {10.0 + y, 0.0}},
-        {{0.0 + y, 10.0}, {0.0 + y, 0.0}, {10.0 + y, 0.0}, {20.0 + y, 0.0}},
-        {{-20.0 + y, 0.0}, {-10.0 + y, 0.0}, {0.0 + y, 0.0}, {0.0 + y, 10.0}},
-        {{0.0 + y, 0.0}, {10.0 + y, 0.0}, {0.0 + y, -10.0}, {10.0 + y, -10.0}},
-        {{-10.0 + y, -10.0}, {0.0 + y, -10.0}, {0.0 + y, 0.0}, {10.0 + y, 0.0}},
-        {{-10.0 + y, 0.0}, {0.0 + y, 0.0}, {0.0 + y, 10.0}, {10.0 + y, 0.0}},
-        //{{-10.0, 0.0}, {0.0, 0.0}, {0.0, -10.0}, {10.0, -10.0}},
-        {{-20.0 + y, 10.0}, {-10.0 + y, 0.0}, {0.0 + y, 10.0}, {10.0 + y, 0.0}},
-    };
-     
-    dex ;
-    
-    const std::vector<std::pair<float, float>>& YZs = Shapes[index];
-    for (auto&& YZ : YZs)
-    {
-        FRotator Rotation(0.0, 0.0, 0.0);
-        ABlock* B = GetWorld()->SpawnActor<ABlock>(this->GetActorLocation(), Rotation);
-        B->BlockMesh->SetMaterial(1, Colors[dex]);
-        B->AttachToActor(this, FAttachmentTransformRules::KeepRelativeTransform);
-        B->SetActorRelativeLocation(FVector(0.0, YZ.first, YZ.second));
-    }
-}
+
 
 void APiece::Index()
 {
@@ -148,7 +120,7 @@ void APiece::Eliminar()
 {
     for (ABlock* B : Blocks)
     {
-        B->ConditionalBeginDestroy();
+        B->Destroy();
         B = nullptr;
     }
 }

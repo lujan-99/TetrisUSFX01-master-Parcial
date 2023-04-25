@@ -56,8 +56,9 @@ void ABoard::Tick(float DeltaTime)
         }
         break;
     case PS_GOT_BOTTOM:
-        //New->Index();
+        
         New->Eliminar();
+        NewNew->Eliminar();
         CoolLeft -= DeltaTime;
         if (CoolLeft <= 0.0f)
         {
@@ -140,14 +141,16 @@ void ABoard::MoveDown()
 void ABoard::NewPiece()
 {
     CheckLine();
+    FVector Loca(0.0, 100.0, 100.0);
     FVector Location(0.0, 5.0, 195.0);
-    FVector Loc(0.0, 80.0, 195.0);
+    FVector Loc(0.0, 100.0, 195.0);
     FRotator Rotation(0.0, 0.0, 0.0);
     if (CurrentPiece)
     {
         CurrentPiece->Dismiss();
         CurrentPiece->Destroy();
     }
+
     int der = New->getIndex();
   
     CurrentPiece = GetWorld()->SpawnActor<APiece>(Location, Rotation);
@@ -159,10 +162,21 @@ void ABoard::NewPiece()
         New->Destroy();
         
     }
-   
+
+    int dere = NewNew->getIndex();
     New = GetWorld()->SpawnActor<APiece>(Loc, Rotation);
-    New->Index();
+    New->setIndex(dere);
+    //New->Index();
     New->SpawnBlocks();
+    if (NewNew)
+    {
+        NewNew->Dismiss();
+        NewNew->Destroy();
+
+    }
+    NewNew = GetWorld()->SpawnActor<APiece>(Loca, Rotation);
+    NewNew->Index();
+    NewNew->SpawnBlocks();
     bGameOver = CheckGameOver();
     if (bGameOver)
     {
@@ -175,9 +189,13 @@ void ABoard::NewPiece()
 }
 void ABoard::Inicio()
 {
-    FVector Loc(0.0, 80.0, 195.0);
+    FVector Loca(0.0, 100.0, 100.0);
+    FVector Loc(0.0, 100.0, 195.0);
     FVector Location(0.0, 5.0, 195.0);
     FRotator Rotation(0.0, 0.0, 0.0);
+    NewNew = GetWorld()->SpawnActor<APiece>(Loca, Rotation);
+    NewNew->Index();
+    NewNew->SpawnBlocks();
     New = GetWorld()->SpawnActor<APiece>(Loc, Rotation);
     New->Index();
     New->SpawnBlocks();

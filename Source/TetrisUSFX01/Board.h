@@ -28,6 +28,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY()
+		APiece* NewNew;
 		APiece* New;
 	APiece* CurrentPiece;
 

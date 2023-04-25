@@ -36,7 +36,6 @@ public:
 	bool MoveDown(bool PlaySound = true);
 	void Dismiss();
 	bool CheckWillCollision(std::function<FVector(FVector OldLocation)> ChangeBeforeCheck);
-	void Dibujar(int dex);
 	void Index();
 	void Eliminar();
 
